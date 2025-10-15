@@ -409,12 +409,20 @@ private extension PanModalPresentationController {
      & configures its layout constraints.
      */
     func addDragIndicatorView(to view: UIView) {
+        let center: CGFloat
+        if #available(iOS 15.0, *),
+           let scane = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+           let centerX = scane.keyWindow?.center.x
+        {
+            let x = centerX - (Constants.dragIndicatorSize.width / 2)
+            dragIndicatorView.frame = CGRect(
+                x: x,
+                y: Constants.indicatorYOffset,
+                width: Constants.dragIndicatorSize.width,
+                height: Constants.dragIndicatorSize.height
+            )
+        }
         view.addSubview(dragIndicatorView)
-        dragIndicatorView.translatesAutoresizingMaskIntoConstraints = false
-        dragIndicatorView.bottomAnchor.constraint(equalTo: view.topAnchor, constant: -Constants.indicatorYOffset).isActive = true
-        dragIndicatorView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        dragIndicatorView.widthAnchor.constraint(equalToConstant: Constants.dragIndicatorSize.width).isActive = true
-        dragIndicatorView.heightAnchor.constraint(equalToConstant: Constants.dragIndicatorSize.height).isActive = true
     }
 
     /**
